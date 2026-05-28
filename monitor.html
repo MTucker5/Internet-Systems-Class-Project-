@@ -7,10 +7,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
 
-    <!-- Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <title>Monitor | Wealth & Asset Tracker</title>
+    <title>Monitor Wealth & Asset Tracker</title>
 
     <style>
         * {
@@ -22,7 +21,6 @@
         :root {
             --bg:           #090b0e;
             --surface:      #161b22;
-            --border:       #30363d;
             --purple:       #633970;
             --purple-light: #c564ca;
             --purple-dark:  #3d1f47;
@@ -40,7 +38,6 @@
             padding: 30px 20px;
         }
 
-        /* ── Top Bar ── */
         .topbar {
             display: flex;
             justify-content: space-between;
@@ -50,9 +47,6 @@
 
         .topbar h1 {
             color: white;
-            border: 3px solid var(--purple-light);
-            padding: 10px 24px;
-            border-radius: 10px;
             font-size: 1.8rem;
             letter-spacing: 2px;
         }
@@ -67,12 +61,8 @@
             font-size: 1rem;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
 
-        .back-btn:hover { background-color: var(--purple-dark); }
-
-        /* ── Summary Cards ── */
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -82,7 +72,6 @@
 
         .card {
             background-color: var(--surface);
-            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 20px;
             text-align: center;
@@ -100,10 +89,8 @@
         .card.expense .card-value { color: var(--red); }
         .card.balance .card-value { color: var(--purple-light); }
 
-        /* ── Form ── */
         .form-section {
             background-color: var(--surface);
-            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 30px;
@@ -128,7 +115,7 @@
             min-width: 150px;
             padding: 12px;
             background-color: var(--bg);
-            border: 1px solid var(--border);
+            border: none;
             border-radius: 8px;
             color: var(--text);
             font-family: Impact, sans-serif;
@@ -137,12 +124,6 @@
         }
 
         .form-row input::placeholder { color: var(--text-muted); }
-
-        .form-row input:focus,
-        .form-row select:focus {
-            outline: none;
-            border-color: var(--purple-light);
-        }
 
         .add-btn {
             background-color: var(--purple);
@@ -154,19 +135,11 @@
             font-size: 1rem;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
             margin-top: 12px;
         }
 
-        .add-btn:hover {
-            background-color: var(--purple-dark);
-            transform: translateY(-2px);
-        }
-
-        /* ── Chart ── */
         .chart-section {
             background-color: var(--surface);
-            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 30px;
@@ -184,10 +157,8 @@
             margin: 0 auto;
         }
 
-        /* ── History ── */
         .history-section {
             background-color: var(--surface);
-            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 24px;
         }
@@ -215,10 +186,7 @@
             font-size: 0.9rem;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
-
-        .toggle-btn:hover { background-color: var(--purple-dark); }
 
         #transaction-list {
             display: none;
@@ -232,7 +200,6 @@
             justify-content: space-between;
             align-items: center;
             background-color: var(--bg);
-            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 12px 16px;
         }
@@ -258,31 +225,28 @@
 </head>
 <body>
 
-    <!-- Top Bar -->
     <div class="topbar">
-        <h1> Monitor</h1>
-        <button class="back-btn" onclick="window.location.href='index.html'">← Back Home</button>
+        <h1>Monitor</h1>
+        <button class="back-btn" onclick="window.location.href='index.html'">Back Home</button>
     </div>
 
-    <!-- Summary Cards -->
     <section class="summary-cards">
         <div class="card income">
-            <div class="card-label"> TOTAL INCOME</div>
+            <div class="card-label">TOTAL INCOME</div>
             <div class="card-value" id="total-income">$0.00</div>
         </div>
         <div class="card expense">
-            <div class="card-label"> TOTAL EXPENSES</div>
+            <div class="card-label">TOTAL EXPENSES</div>
             <div class="card-value" id="total-expenses">$0.00</div>
         </div>
         <div class="card balance">
-            <div class="card-label"> REMAINING </div>
+            <div class="card-label">REMAINING</div>
             <div class="card-value" id="net-balance">$0.00</div>
         </div>
     </section>
 
-    <!-- Add Transaction Form -->
     <section class="form-section">
-        <h2> ADD TRANSACTION</h2>
+        <h2>ADD TRANSACTION</h2>
         <div class="form-row">
             <input type="text"   id="t-description" placeholder="Description (e.g. Bought Apple Stock)" />
             <input type="number" id="t-amount"      placeholder="Amount (e.g. 500)" />
@@ -294,49 +258,22 @@
         <button class="add-btn" onclick="addTransaction()">Add Transaction</button>
     </section>
 
-    <!-- Chart -->
     <section class="chart-section">
-        <h2> INCOME VS EXPENSES</h2>
+        <h2>INCOME VS EXPENSES</h2>
         <div class="chart-wrapper">
             <canvas id="financeChart"></canvas>
         </div>
     </section>
 
-    <!-- History -->
     <section class="history-section">
         <div class="history-header">
-            <h2> TRANSACTION HISTORY</h2>
+            <h2>TRANSACTION HISTORY</h2>
             <button class="toggle-btn" onclick="toggleHistory()">Show History</button>
         </div>
         <div id="transaction-list"></div>
     </section>
 
-    <!-- Chart Setup (must be before script.js) -->
-    <script>
-        const ctx = document.getElementById('financeChart').getContext('2d');
-        const financeChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Income', 'Expenses'],
-                datasets: [{
-                    label: 'Amount ($)',
-                    data: [0, 0],
-                    backgroundColor: ['#3fb950', '#f85149'],
-                    borderRadius: 8,
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } },
-                    x: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } }
-                }
-            }
-        });
-    </script>
-
-    <!-- Link to your JavaScript file — MUST be at the bottom -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 
 </body>
