@@ -1,27 +1,45 @@
 var transactions = [];
 var historyVisible = false;
+var financeChart;
 
-var ctx = document.getElementById('financeChart').getContext('2d');
-var financeChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Income', 'Expenses'],
-        datasets: [{
-            label: 'Amount ($)',
-            data: [0, 0],
-            backgroundColor: ['#3fb950', '#f85149'],
-            borderRadius: 8
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: {
-            y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } },
-            x: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } }
-        }
+// Load saved transactions from localStorage when page opens
+window.onload = function() {
+    var saved = localStorage.getItem('transactions');
+    if (saved) {
+        transactions = JSON.parse(saved);
     }
-});
+
+    var ctx = document.getElementById('financeChart').getContext('2d');
+    financeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Income', 'Expenses'],
+            datasets: [{
+                label: 'Amount ($)',
+                data: [0, 0],
+                backgroundColor: ['#3fb950', '#f85149'],
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } },
+                x: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } }
+            }
+        }
+    });
+
+    // Show saved data on page load
+    updateSummary();
+    updateChart();
+};
+
+// Save transactions array to localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+}
 
 function addTransaction() {
     var description = document.getElementById('t-description').value;
@@ -41,6 +59,9 @@ function addTransaction() {
     };
 
     transactions.push(transaction);
+
+    // Save to localStorage every time a transaction is added
+    saveToLocalStorage();
 
     document.getElementById('t-description').value = '';
     document.getElementById('t-amount').value = '';
