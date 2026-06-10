@@ -87,6 +87,7 @@ function addTransaction() {
 }
 
 //Summary cards 
+function updateSummary() {
     var totalIncome = 0;
     var totalExpenses = 0;
 
