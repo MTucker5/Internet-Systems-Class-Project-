@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Monitor | Wealth & Asset Tracker</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg:           #090b0e;
+            --surface:      #161b22;
+            --purple:       #633970;
+            --purple-light: #c564ca;
+            --purple-dark:  #3d1f47;
+            --green:        #3fb950;
+            --red:          #f85149;
+            --text:         #e6edf3;
+            --text-muted:   #8b949e;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+        }
+
+        .back-btn {
+            background-color: var(--purple);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: Impact, sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card .card-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .card .card-value { font-size: 1.8rem; font-weight: bold; }
+        .card.income  .card-value { color: var(--green); }
+        .card.expense .card-value { color: var(--red); }
+        .card.balance .card-value { color: var(--purple-light); }
+
+        .form-section {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            color: var(--purple-light);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .form-row input,
+        .form-row select {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px;
+            background-color: var(--bg);
+            border: none;
+            border-radius: 8px;
+            color: var(--text);
+            font-family: Impact, sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .form-row input::placeholder { color: var(--text-muted); }
+
+        .add-btn {
+            background-color: var(--purple);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-family: Impact, sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        .chart-section {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .chart-section h2 {
+            color: var(--purple-light);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .chart-wrapper {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .history-section {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .history-header h2 {
+            color: var(--purple-light);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .toggle-btn {
+            background-color: var(--purple);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-family: Impact, sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        #transaction-list {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .transaction-item .t-description { color: var(--text); font-size: 0.95rem; }
+        .transaction-item .t-date { color: var(--text-muted); font-size: 0.8rem; margin-top: 4px; }
+        .transaction-item .t-amount { font-size: 1.1rem; font-weight: bold; }
+        .transaction-item .t-amount.income  { color: var(--green); }
+        .transaction-item .t-amount.expense { color: var(--red); }
+
+        .no-transactions {
+            color: var(--text-muted);
+            text-align: center;
+            padding: 20px;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 12px; text-align: center; }
+            .form-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Monitor</h1>
+        <button class="back-btn" onclick="window.location.href='index.html'">Back Home</button>
+    </header>
+
+    <main>
+        <section class="summary-cards">
+            <div class="card income">
+                <div class="card-label">TOTAL INCOME</div>
+                <div class="card-value" id="total-income">$0.00</div>
+            </div>
+            <div class="card expense">
+                <div class="card-label">TOTAL EXPENSES</div>
+                <div class="card-value" id="total-expenses">$0.00</div>
+            </div>
+            <div class="card balance">
+                <div class="card-label">REMAINING</div>
+                <div class="card-value" id="net-balance">$0.00</div>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h2>ADD TRANSACTION</h2>
+            <div class="form-row">
+                <input type="text"   id="t-description" placeholder="Description (e.g. Bought Apple Stock)" />
+                <input type="number" id="t-amount"      placeholder="Amount (e.g. 500)" />
+                <select id="t-type">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
+            <button class="add-btn" onclick="addTransaction()">Add Transaction</button>
+        </section>
+
+        <section class="chart-section">
+            <h2>INCOME VS EXPENSES</h2>
+            <div class="chart-wrapper">
+                <canvas id="financeChart"></canvas>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <div class="history-header">
+                <h2>TRANSACTION HISTORY</h2>
+                <button class="toggle-btn" onclick="toggleHistory()">Show History</button>
+            </div>
+            <div id="transaction-list"></div>
+        </section>
+    </main>
+
+    <script src="jscripts.js"></script>
+
+</body>
+</html>

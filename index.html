@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
+    
+    
+    <title> Wealth & Asset Tracker </title>
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+        body {
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            gap: 20px;
+            text-align: center;
+            padding: 20px; 
+        }
+        
+      /* ── CSS Variables (your color palette) ── */
+       :root {
+         --bg:        #090b0e;
+         --surface:   #161b22;
+         --border:    #30363d;
+         --purple:      #633970;
+         --purple-light:  #c564ca;
+         --plum:     #6d4bbc;
+         --red:       #f85149;
+         --text:      #e6edf3;
+         --text-muted:#8b949e;
+      }
+
+      h1{
+        color: white;
+        border: 3px solid var(--purple-light);
+        padding: 16px 32px;
+        border-radius: 10px; 
+        font-size: 3rem;
+        letter-spacing: 2px;
+      }
+      /* ── Button Row ── */
+        .nav-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+        }
+ 
+        .nav-buttons button {
+            background-color: var(--purple);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-family: Impact, sans-serif;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+ 
+        .nav-buttons button:hover {
+            background-color: var(--purple-dark);
+            transform: translateY(-2px);
+        }
+
+ 
+      
+    </style>
+</head>
+
+<body>
+    <!--This is the title of the website-->
+    <h1> Wealth & Assist Tracker</h1>
+    <p>Welcome to the Wealth & Asset Tracker. Please sign In then look at your monitor!</p>
+
+    <div class="nav-buttons">
+        
+        <button> Sign In</button>
+        <a href="monitor.html">
+            <button>Monitor</button>
+        </a>
+        <button>Contact</button>
+    </div>
+    
+
+
+
+</body>
+</html>
